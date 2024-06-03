@@ -1,19 +1,26 @@
+import { useState } from "react"
 import { AntDesign } from "@expo/vector-icons"
-import { Box, Heading, FlatList, Text, Icon, Spacer, HStack, AddIcon } from "native-base"
+import { Box, Heading, FlatList, Text, Icon, Spacer, HStack, AddIcon, Modal } from "native-base"
 import { task } from "@/types/task"
+import NewTaskForm from "./NewTaskForm"
 
 const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => {
 
-    const addTask = () => {
+    const [addTaskModal, setAddTaskModal] = useState(false)
+    const [editTaskModal, setEditTaskModal] = useState(false)
+    const [deleteTaskModal, setDeleteTaskModal] = useState(false)
 
+    const addTask = () => {
+        setAddTaskModal(true)
     }
 
     const editTask = () => { 
 
     }
 
-    const deleteTask = () => { 
-
+    const deleteTask = (item: task) => { 
+        const newTaskList = data.filter((task) => task.id !== item.id)
+        setTasks(newTaskList)
     }
 
     const doneTask = (item: task) => {
@@ -37,11 +44,11 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                                 <Box borderBottomWidth="1" width={"100%"} py="2">
                                     <HStack width={"100%"} alignItems={"center"} justifyContent="space-between">
                                         <Text fontSize="lg" bold>
-                                            {`${item.title} - ${item.done ? 'Pendiente' : 'Completada'}`}
+                                            {`${item.title} - ${item.done ? 'Completada' : 'Pendiente'}`}
                                         </Text>
                                         <Spacer />
                                         <HStack w={'30%'} mt={2} justifyContent={'space-between'}>
-                                            <Text mt={1}>
+                                            <Text mt={1} onPress={() => deleteTask(item)}>
                                                 <Icon as={AntDesign} color={"#DD4442"} name="delete" size="lg" />
                                             </Text>
                                             <Text mt={1}>
@@ -58,7 +65,19 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                         keyExtractor={item => item.id.toString()} />
                 )
             }
-            <Text mt={10}>
+            <Modal isOpen={addTaskModal} onClose={() => setAddTaskModal(false)}>
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>Nueva Tarea</Modal.Header>
+                    <Modal.Body>
+                        <NewTaskForm 
+                            setAddTaskModal={setAddTaskModal}
+                            setTasks={setTasks}
+                        />
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
+            <Text mt={10} onPress={addTask}>
                 <AddIcon />
             </Text>
         </Box >
