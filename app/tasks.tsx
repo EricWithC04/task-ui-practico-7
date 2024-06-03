@@ -2,12 +2,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import { Box } from "native-base";
 import TasksList from "@/components/TasksList";
-
-type task = {
-    id: number,
-    title: string,
-    done: boolean
-}
+import { task } from "@/types/task";
 
 export default function TasksPage() {
 
