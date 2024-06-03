@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { AntDesign } from "@expo/vector-icons"
-import { Box, Heading, FlatList, Text, Icon, Spacer, HStack, AddIcon, Modal } from "native-base"
+import { Box, Heading, FlatList, Text, Icon, Spacer, HStack, AddIcon, Modal, Button } from "native-base"
 import { task } from "@/types/task"
 import NewTaskForm from "./NewTaskForm"
 import EditTaskForm from "./EditTaskForm"
@@ -11,6 +11,7 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
     const [editTaskModal, setEditTaskModal] = useState(false)
     const [taskToEdit, setTaskToEdit] = useState<task>({ id: 0, title: "", done: false })
     const [deleteTaskModal, setDeleteTaskModal] = useState(false)
+    const [confirmDeleteTask, setConfirmDeleteTask] = useState<task>({ id: 0, title: "", done: false })
 
     const addTask = () => {
         setAddTaskModal(true)
@@ -21,9 +22,16 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
         setEditTaskModal(true)
     }
 
-    const deleteTask = (item: task) => { 
-        const newTaskList = data.filter((task) => task.id !== item.id)
+    const deleteTask = (item: task) => {
+        setConfirmDeleteTask(item)
+        setDeleteTaskModal(true)
+    }
+
+    const handleDeleteTask = () => {
+        const newTaskList = data.filter((task) => task.id !== confirmDeleteTask.id)
         setTasks(newTaskList)
+        setDeleteTaskModal(false)
+        setConfirmDeleteTask({ id: 0, title: "", done: false })
     }
 
     const doneTask = (item: task) => {
@@ -68,6 +76,17 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                         keyExtractor={item => item.id.toString()} />
                 )
             }
+            <Modal isOpen={deleteTaskModal} onClose={() => setDeleteTaskModal(false)}>
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>Eliminar Tarea</Modal.Header>
+                    <Modal.Body>
+                        <Text>¿Seguro que quieres borrar esta tarea?</Text>
+                        <Button colorScheme={"danger"} mt={5} onPress={handleDeleteTask}>Si</Button>
+                        <Button colorScheme={"light"} mt={5}>No</Button>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
             <Modal isOpen={editTaskModal} onClose={() => setEditTaskModal(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
