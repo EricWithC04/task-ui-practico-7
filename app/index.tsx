@@ -2,6 +2,7 @@ import { Text, View } from "react-native";
 import { Link } from "expo-router";
 import { Image, Box, Button } from "native-base";
 import bg from "@/assets/images/background.jpg";
+import TasksPage from "./tasks";
 
 export default function Index() {
   return (

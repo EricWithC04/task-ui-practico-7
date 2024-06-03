@@ -4,7 +4,7 @@ import { Image, Box, HStack, Icon } from "native-base";
 import bg from "@/assets/images/background.jpg";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function Index() {
+export default function LoginPage() {
     return (
         <View
             style={{
