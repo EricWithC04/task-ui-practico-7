@@ -1,8 +1,7 @@
-import { Text, View } from "react-native";
-import { Link } from "expo-router";
+import { View } from "react-native";
+import { router } from "expo-router";
 import { Image, Box, Button } from "native-base";
 import bg from "@/assets/images/background.jpg";
-import TasksPage from "./tasks";
 
 export default function Index() {
   return (
@@ -14,15 +13,11 @@ export default function Index() {
     >
       <Image source={bg} style={{ width: '100%', maxHeight: '45%' }} alt="background"></Image>
       <Box style={{ flex: 1, alignItems: "center", width: "80%" }}>
-        <Button>
-          <Link href="/login" style={{ color: 'white' }}>
-            LOGIN
-          </Link>
+        <Button onPress={() => router.push("/login")}>
+          LOGIN
         </Button>
-        <Button>
-          <Link href="/register" style={{ color: 'white' }}>
+        <Button onPress={() => router.push("/register")}>
             REGISTER
-          </Link>
         </Button>
       </Box>
     </View>
