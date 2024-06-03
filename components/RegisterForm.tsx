@@ -1,12 +1,7 @@
 import { useState } from "react"
 import { Box, Button, Input, Text, FormControl } from "native-base"
+import { RegisterErrors } from "../types/validationError"
 import { router } from "expo-router"
-
-type RegisterErrors = {
-    name?: string
-    password?: string
-    password2?: string
-}
 
 const RegisterForm = () => {
 
