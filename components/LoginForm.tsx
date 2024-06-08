@@ -1,13 +1,15 @@
 import { useState } from "react"
-import { Box, Button, Input, Text, FormControl } from "native-base"
+import { Box, Button, Input, Text, FormControl, Modal } from "native-base"
 import { LoginErrors } from "@/types/validationError"
 import { router } from "expo-router"
+import dataUsers from "@/assets/data/users.json"
 
 const LoginForm = () => {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [errors, setErrors] = useState<LoginErrors>({})
+    const [incorrectCredentials, setIncorrectCredentials] = useState(false)
 
     const validate = () => {
         const newErrors: LoginErrors = {};
@@ -29,19 +31,31 @@ const LoginForm = () => {
             setErrors(validatedErrors)
         } else {
             setErrors({})
-            return router.replace("/tasks")
+            const user = dataUsers.find(user => user.username === username && user.password === password)
+            if (!user) {
+                setIncorrectCredentials(true)
+            } else {
+                return router.replace("/tasks")
+            }
         }
     }
 
     return (
         <Box alignItems={"center"} w={"80%"} mt={10}>
+            <Modal isOpen={incorrectCredentials} onClose={() => setIncorrectCredentials(false)}>
+                <Modal.Content maxWidth="400px">
+                    <Modal.CloseButton />
+                    <Modal.Header>Error</Modal.Header>
+                    <Modal.Body>Usuario o contraseña incorrectos</Modal.Body>
+                </Modal.Content>
+            </Modal>
             <Text>Iniciar Sesión</Text>
             <FormControl isInvalid={errors.hasOwnProperty('name')}>
                 <Input 
                     variant="underlined" 
                     size="lg" 
                     mt={5} 
-                    placeholder="Username" 
+                    placeholder="Nombre de Usuario" 
                     onChangeText={value => setUsername(value)}
                     value={username}
                 />
@@ -55,7 +69,7 @@ const LoginForm = () => {
                     variant="underlined" 
                     size="lg" 
                     mt={5} 
-                    placeholder="Password" 
+                    placeholder="Contraseña" 
                     type="password" 
                     onChangeText={value => setPassword(value)}
                     value={password}

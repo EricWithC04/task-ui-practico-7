@@ -43,7 +43,7 @@ const RegisterForm = () => {
                     variant="underlined" 
                     size="lg" 
                     mt={5} 
-                    placeholder="Username" 
+                    placeholder="Nombre de Usuario" 
                     onChangeText={value => setUsername(value)}
                     value={username}
                 />
@@ -57,7 +57,7 @@ const RegisterForm = () => {
                     variant="underlined" 
                     size="lg" 
                     mt={5} 
-                    placeholder="Password" 
+                    placeholder="Contraseña" 
                     type="password" 
                     onChangeText={value => setPassword(value)}
                     value={password}
@@ -72,7 +72,7 @@ const RegisterForm = () => {
                     variant="underlined" 
                     size="lg" 
                     mt={5} 
-                    placeholder="Repeat Password" 
+                    placeholder="Repetir Contraseña" 
                     type="password" 
                     onChangeText={value => setPassword2(value)}
                     value={password2}
