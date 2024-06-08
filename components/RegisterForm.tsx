@@ -1,7 +1,8 @@
 import { useState } from "react"
-import { Box, Button, Input, Text, FormControl } from "native-base"
+import { Box, Button, Input, Text, FormControl, Modal } from "native-base"
 import { RegisterErrors } from "../types/validationError"
 import { router } from "expo-router"
+import dataUsers from "../assets/data/users.json"
 
 const RegisterForm = () => {
 
@@ -9,6 +10,7 @@ const RegisterForm = () => {
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
     const [errors, setErrors] = useState<RegisterErrors>({})
+    const [userExists, setUserExists] = useState(false)
 
     const validate = () => {
         const newErrors: RegisterErrors = {};
@@ -31,12 +33,30 @@ const RegisterForm = () => {
             setErrors(validatedErrors)
         } else {
             setErrors({})
-            router.replace('/tasks')
+            const user = dataUsers.find(user => user.username === username)
+            if (user) {
+                setUserExists(true)
+            } else {
+                dataUsers.push({ id: dataUsers.length, username, password })
+                router.replace('/login')
+            }
         }
     }
 
     return (
         <Box alignItems={"center"} w={"80%"} mt={10}>
+            <Modal isOpen={userExists} onClose={() => setUserExists(false)}>
+                <Modal.Content maxWidth="400px">
+                    <Modal.CloseButton />
+                    <Modal.Header>Error</Modal.Header>
+                    <Modal.Body>
+                        <Text>Ese nombre de usuario ya está ocupado, intenta con otro</Text>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onPress={() => setUserExists(false)} width={"100%"}>Ok</Button>
+                    </Modal.Footer>
+                </Modal.Content>
+            </Modal>
             <Text>Registro</Text>
             <FormControl isInvalid={errors.hasOwnProperty('name')}>
                 <Input 
