@@ -37,7 +37,7 @@ const RegisterForm = () => {
             if (user) {
                 setUserExists(true)
             } else {
-                dataUsers.push({ id: dataUsers.length, username, password })
+                dataUsers.push({ id: dataUsers.length + 1, username, password })
                 router.replace('/login')
             }
         }
