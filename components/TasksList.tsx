@@ -9,13 +9,29 @@ import { getData } from "@/utils/storage"
 
 const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => {
 
+    const defaultTask = { 
+        id: 0, 
+        title: "", 
+        description: "", 
+        date: "", 
+        user_id: 0, 
+        done: false 
+    }
+
     const [userTasks, setUserTasks] = useState<Array<task>>([])
 
     const [addTaskModal, setAddTaskModal] = useState(false)
+
     const [editTaskModal, setEditTaskModal] = useState(false)
-    const [taskToEdit, setTaskToEdit] = useState<task>({ id: 0, title: "", description: "", date: "", user_id: 0, done: false })
+    const [taskToEdit, setTaskToEdit] = useState<task>(defaultTask)
+    
     const [deleteTaskModal, setDeleteTaskModal] = useState(false)
-    const [confirmDeleteTask, setConfirmDeleteTask] = useState<task>({ id: 0, title: "", description: "", date: "", user_id: 0,  done: false })
+    const [confirmDeleteTask, setConfirmDeleteTask] = useState<task>(defaultTask)
+
+    const [showTaskModal, setShowTaskModal] = useState(false)
+    const [showTask, setShowTask] = useState<task>(defaultTask)
+
+    const [nameOfUser, setNameOfUser] = useState<string>("")
 
     useEffect(() => {
         const initializeTasks = async () => {
@@ -30,6 +46,7 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
             const filteredData = data.filter((task) => task.user_id === userData.id)
     
             setUserTasks(filteredData)
+            setNameOfUser(userData.username)
         }
         initializeTasks()
     }, [data])
@@ -61,6 +78,11 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
         setTasks(newTaskList)
     }
 
+    const handleShowTask = (taskData: task) => {
+        setShowTaskModal(!showTaskModal)
+        setShowTask(taskData)
+    }
+
     return (
         <Box alignItems={"center"} w={"80%"} mt={10}>
             <Heading fontSize="xl" p="4" pb="3">Tareas</Heading>
@@ -75,8 +97,8 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                             return (
                                 <Box borderBottomWidth="1" width={"100%"} py="2">
                                     <HStack width={"100%"} alignItems={"center"} justifyContent="space-between">
-                                        <Text fontSize="lg" bold>
-                                            {`${item.title} - ${item.done ? 'Completada' : 'Pendiente'}`}
+                                        <Text fontSize="lg" maxWidth={"60%"} bold onPress={() => handleShowTask(item)}>
+                                            {item.title}
                                         </Text>
                                         <Spacer />
                                         <HStack w={'30%'} mt={2} justifyContent={'space-between'}>
@@ -97,6 +119,25 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                         keyExtractor={item => item.id.toString()} />
                 )
             }
+            <Modal isOpen={showTaskModal} onClose={() => setShowTaskModal(false)}>
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>Detalles de la Tarea</Modal.Header>
+                    <Modal.Body>
+                        <Text mt={2}><Text bold>Titulo: </Text>{showTask.title}</Text>
+                        <Text mt={2}><Text bold>Descripción: </Text>{showTask.description}</Text>
+                        <Text mt={2}><Text bold>Fecha de Creación: </Text>{showTask.date}</Text>
+                        <Text mt={2}><Text bold>Creador: </Text>{nameOfUser}</Text>
+                        <Text mt={2}>
+                            <Text bold>Estado: </Text>
+                            <Text color={showTask.done ? "#34aa12" : "#DD4442"}>{showTask.done ? 'Completada' : 'Pendiente'}</Text>
+                        </Text>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button w={"100%"} onPress={() => setShowTaskModal(false)}>Cerrar</Button>
+                    </Modal.Footer>
+                </Modal.Content> 
+            </Modal>
             <Modal isOpen={deleteTaskModal} onClose={() => setDeleteTaskModal(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
