@@ -1,17 +1,38 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AntDesign } from "@expo/vector-icons"
 import { Box, Heading, FlatList, Text, Icon, Spacer, HStack, AddIcon, Modal, Button } from "native-base"
 import { task } from "@/types/task"
 import NewTaskForm from "./NewTaskForm"
 import EditTaskForm from "./EditTaskForm"
+import { user } from "@/types/user"
+import { getData } from "@/utils/storage"
 
 const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => {
 
+    const [userTasks, setUserTasks] = useState<Array<task>>([])
+
     const [addTaskModal, setAddTaskModal] = useState(false)
     const [editTaskModal, setEditTaskModal] = useState(false)
-    const [taskToEdit, setTaskToEdit] = useState<task>({ id: 0, title: "", done: false })
+    const [taskToEdit, setTaskToEdit] = useState<task>({ id: 0, title: "", description: "", date: "", user_id: 0, done: false })
     const [deleteTaskModal, setDeleteTaskModal] = useState(false)
-    const [confirmDeleteTask, setConfirmDeleteTask] = useState<task>({ id: 0, title: "", done: false })
+    const [confirmDeleteTask, setConfirmDeleteTask] = useState<task>({ id: 0, title: "", description: "", date: "", user_id: 0,  done: false })
+
+    useEffect(() => {
+        const initializeTasks = async () => {
+            const userDataStored = await getData("user")
+    
+            if (!userDataStored) { 
+                throw new Error("Error: no se han encontrado los datos del usuario.")
+            }
+    
+            const userData: user = JSON.parse(userDataStored)
+    
+            const filteredData = data.filter((task) => task.user_id === userData.id)
+    
+            setUserTasks(filteredData)
+        }
+        initializeTasks()
+    }, [data])
 
     const addTask = () => {
         setAddTaskModal(true)
@@ -31,7 +52,7 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
         const newTaskList = data.filter((task) => task.id !== confirmDeleteTask.id)
         setTasks(newTaskList)
         setDeleteTaskModal(false)
-        setConfirmDeleteTask({ id: 0, title: "", done: false })
+        setConfirmDeleteTask({ id: 0, title: "", description: "", date: "", user_id: 0, done: false })
     }
 
     const doneTask = (item: task) => {
@@ -44,11 +65,11 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
         <Box alignItems={"center"} w={"80%"} mt={10}>
             <Heading fontSize="xl" p="4" pb="3">Tareas</Heading>
             {
-                data.length === 0 ? (
+                userTasks.length === 0 ? (
                     <Text>Todavía no hay tareas</Text>
                 ) : (
                     <FlatList
-                        data={data}
+                        data={userTasks}
                         width={"100%"}
                         renderItem={({ item }) => {
                             return (

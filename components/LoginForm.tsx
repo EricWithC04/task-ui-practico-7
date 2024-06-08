@@ -3,6 +3,7 @@ import { Box, Button, Input, Text, FormControl, Modal } from "native-base"
 import { LoginErrors } from "@/types/validationError"
 import { router } from "expo-router"
 import dataUsers from "@/assets/data/users.json"
+import { storeData } from "@/utils/storage"
 
 const LoginForm = () => {
 
@@ -25,7 +26,7 @@ const LoginForm = () => {
         return newErrors;
     }
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         const validatedErrors: LoginErrors = validate()
         if (Object.keys(validatedErrors).length) {
             setErrors(validatedErrors)
@@ -35,7 +36,8 @@ const LoginForm = () => {
             if (!user) {
                 setIncorrectCredentials(true)
             } else {
-                return router.replace("/tasks")
+                await storeData("user", JSON.stringify(user))
+                return router.push("/tasks")
             }
         }
     }
@@ -56,7 +58,7 @@ const LoginForm = () => {
                     size="lg" 
                     mt={5} 
                     placeholder="Nombre de Usuario" 
-                    onChangeText={value => setUsername(value)}
+                    onChangeText={(value: string) => setUsername(value)}
                     value={username}
                 />
                 {
@@ -71,7 +73,7 @@ const LoginForm = () => {
                     mt={5} 
                     placeholder="Contraseña" 
                     type="password" 
-                    onChangeText={value => setPassword(value)}
+                    onChangeText={(value: string) => setPassword(value)}
                     value={password}
                 />
                 {

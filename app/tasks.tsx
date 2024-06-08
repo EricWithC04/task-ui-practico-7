@@ -3,10 +3,11 @@ import { View } from "react-native";
 import { Box } from "native-base";
 import TasksList from "@/components/TasksList";
 import { task } from "@/types/task";
+import dataTasks from "@/assets/data/tasks.json";
 
 export default function TasksPage() {
 
-    const [ tasks, setTasks ] = useState<Array<task>>([{id:1, title: "Task 1", done: false}, {id:2, title: "Task 2", done: true}]);
+    const [ tasks, setTasks ] = useState<Array<task>>(dataTasks);
 
     return (
         <View
