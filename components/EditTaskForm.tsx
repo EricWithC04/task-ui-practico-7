@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { FormControl, Input, Button } from "native-base";
+import { FormControl, Input, Button, TextArea } from "native-base";
 import { task } from "../types/task";
 
 export default function EditTaskForm({ setEditTaskModal, setTasks, data, taskToEdit }: { setEditTaskModal: any, setTasks: any, data: Array<task>, taskToEdit: task }) {
 
     const [title, setTitle] = useState(taskToEdit.title)
+    const [description, setDescription] = useState(taskToEdit.description)
 
     const handleEditTask = () => {
-        const newTaskList = data.map((task: task) => task.id === taskToEdit.id ? { ...task, title: title } : task)
+        const newTaskList = data.map((task: task) => {
+            task.id === taskToEdit.id ? 
+            { 
+                ...task, 
+                title: title, 
+                description: description 
+            } : task
+        })
         setTasks(newTaskList)
         setEditTaskModal(false)
     }
@@ -15,8 +23,9 @@ export default function EditTaskForm({ setEditTaskModal, setTasks, data, taskToE
     return (
         <FormControl>
             <Input onChangeText={setTitle} value={title} />
+            <TextArea placeholder="Descripción..." autoCompleteType={"off"} onChangeText={(text) => setDescription(text)} value={description} mt={2}></TextArea>
             <Button mt="2" onPress={handleEditTask}>
-                Edit
+                Editar Tarea
             </Button>
         </FormControl>
     )
