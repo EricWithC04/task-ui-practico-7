@@ -1,24 +1,60 @@
+import { router } from "expo-router";
 import { 
     Box, 
     Button, 
     Divider, 
     HStack, 
-    Input, 
     Select, 
     Switch, 
     Text, 
     VStack, 
     View,
-    useColorMode,
-    useColorModeValue
 } from "native-base";
+import { useState } from "react";
 
 export default function Settings() {
 
+    const [theme, setTheme] = useState("light");
+    const [lenguage, setLenguage] = useState("es");
 
-    const { toggleColorMode } = useColorMode();
-
-    const bg = useColorModeValue("#fff", "#151718");
+    const lenguages: any = {
+        es: {
+            darkMode: "Modo Oscuro",
+            dateFormat: "Formato de Fecha",
+            changeLenguage: "Cambiar Idioma",
+            backButton: "Volver"
+        },
+        en: {
+            darkMode: "Dark Theme",
+            dateFormat: "Date Format",
+            changeLenguage: "Change Language",
+            backButton: "Back"
+        },
+        fr: {
+            darkMode: "Thème sombre",
+            dateFormat: "Format de Date",
+            changeLenguage: "Changer de Langue",
+            backButton: "Dos"
+        },
+        ge: {
+            darkMode: "Dunkles Thema",
+            dateFormat: "Datumsformat",
+            changeLenguage: "Sprache ändern",
+            backButton: "Zurück"
+        },
+        it: {
+            darkMode: "Tema Scuro",
+            dateFormat: "Formato Data",
+            changeLenguage: "Cambia Lingua",
+            backButton: "Indietro"
+        },
+        pt: {
+            darkMode: "Tema Escuro",
+            dateFormat: "Formato de Data",
+            changeLenguage: "Mudar Idioma",
+            backButton: "Voltar"
+        }
+    }
 
     return (
         <View
@@ -26,41 +62,44 @@ export default function Settings() {
                 flex: 1,
                 alignItems: "center",
             }}
-            backgroundColor={bg}
+            paddingTop={10}
+            backgroundColor={theme === "dark" ? "#151718" : "#fff"}
         >
             <Box width={"80%"} alignItems={"center"} my={5}>
                 <HStack width={"100%"} my={2} alignItems={"center"} justifyContent={"space-between"}>
-                    <Text>Modo Oscuro</Text>
-                    <Switch size={"lg"} onChange={toggleColorMode}></Switch>
+                    <Text color={theme === "dark" ? "#fff" : "#151718"}>
+                        {lenguages[lenguage].darkMode}
+                    </Text>
+                    <Switch size={"lg"} onChange={() => setTheme(theme === "light" ? "dark" : "light")}></Switch>
                 </HStack>
                 <Divider my={3}></Divider>
                 <VStack width={"100%"} my={2} alignItems={"start"}>
-                    <Text>Formato de Fecha</Text>
-                    <Select defaultValue="1" mt={4}>
+                    <Text color={theme === "dark" ? "#fff" : "#151718"}>{lenguages[lenguage].dateFormat}</Text>
+                    <Select color={theme === "dark" ? "#fff" : "#151718"} defaultValue="1" mt={4}>
                         <Select.Item label="2024-06-08T18:11:20.427Z" value="1"></Select.Item>
                         <Select.Item label="08/06/2024" value="2"></Select.Item>
                     </Select>
                 </VStack>
                 <Divider my={3}></Divider>
                 <VStack width={"100%"} my={2} alignItems={"start"}>
-                    <Text>Cambiar Idioma</Text>
-                    <Select defaultValue="Spanish" selectedValue="Spanish" mt={4}>
-                        <Select.Item label="Español" value="Spanish"></Select.Item>
-                        <Select.Item label="English" value="English"></Select.Item>
-                        <Select.Item label="Français" value="French"></Select.Item>
-                        <Select.Item label="Deutsch" value="German"></Select.Item>
-                        <Select.Item label="Italiano" value="Italian"></Select.Item>
-                        <Select.Item label="Português" value="Portuguese"></Select.Item>
+                    <Text color={theme === "dark" ? "#fff" : "#151718"}>{lenguages[lenguage].changeLenguage}</Text>
+                    <Select 
+                        color={theme === "dark" ? "#fff" : "#151718"} 
+                        defaultValue="es" 
+                        selectedValue={lenguage} 
+                        mt={4}
+                        onValueChange={(itemValue) => setLenguage(itemValue)}
+                    >
+                        <Select.Item label="Español" value="es"></Select.Item>
+                        <Select.Item label="English" value="en"></Select.Item>
+                        <Select.Item label="Français" value="fr"></Select.Item>
+                        <Select.Item label="Deutsch" value="ge"></Select.Item>
+                        <Select.Item label="Italiano" value="it"></Select.Item>
+                        <Select.Item label="Português" value="pt"></Select.Item>
                     </Select>                    
                 </VStack>
-                {/* <Divider my={3}></Divider>
-                <HStack width={"100%"} my={2} alignItems={"center"} justifyContent={"space-between"}>
-                    <Text>Cambiar Fondo</Text>
-                    <Input ></Input>
-                </HStack>
-                <Divider my={3}></Divider> */}
-                <Button width={"100%"}>Back</Button>
             </Box>
+            <Button onPress={() => router.back()} width={"80%"} position={"absolute"} bottom={10}>{lenguages[lenguage].backButton}</Button>
         </View>
     );
 }
