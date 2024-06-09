@@ -7,12 +7,20 @@ export default function NewTaskForm({ setAddTaskModal, setTasks }: { setAddTaskM
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
+    const [titleEmptyError, setTitleEmptyError] = useState(false)
 
     const handleAddTask = async () => {
+        setTitleEmptyError(false)
+
         const userData = await getData('user')
 
         if (!userData) {
             throw new Error('Error: no se han encontrado los datos del usuario.')
+        }
+
+        if (title === '') {
+            setTitleEmptyError(true)
+            return
         }
 
         setTasks((prev: Array<task>) => [
@@ -30,8 +38,18 @@ export default function NewTaskForm({ setAddTaskModal, setTasks }: { setAddTaskM
     }
 
     return (
-        <FormControl>
-            <Input placeholder="Titulo..." onChangeText={setTitle} value={title} />
+        <FormControl isInvalid={title === '' && titleEmptyError}>
+            <Input 
+                placeholder="Titulo..." 
+                onChangeText={setTitle} 
+                value={title}
+            />
+            {
+                title === '' && titleEmptyError ? 
+                    <FormControl.ErrorMessage _text={{ color: 'red.500' }}>
+                        La tarea debe tener un titulo
+                    </FormControl.ErrorMessage> : null
+            }
             <TextArea placeholder="Descripción..." autoCompleteType={"off"} onChangeText={(text) => setDescription(text)} value={description} mt={2} />
             <Button mt="2" onPress={handleAddTask}>
                 Crear Tarea
