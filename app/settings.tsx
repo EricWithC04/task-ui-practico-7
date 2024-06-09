@@ -76,8 +76,8 @@ export default function Settings() {
                 <VStack width={"100%"} my={2} alignItems={"start"}>
                     <Text color={theme === "dark" ? "#fff" : "#151718"}>{lenguages[lenguage].dateFormat}</Text>
                     <Select color={theme === "dark" ? "#fff" : "#151718"} defaultValue="1" mt={4}>
-                        <Select.Item label="2024-06-08T18:11:20.427Z" value="1"></Select.Item>
-                        <Select.Item label="08/06/2024" value="2"></Select.Item>
+                        <Select.Item label="Sun Jun 09 2024 14:51:47 GMT-0300" value="1"></Select.Item>
+                        <Select.Item label="09/06/2024" value="2"></Select.Item>
                     </Select>
                 </VStack>
                 <Divider my={3}></Divider>
