@@ -145,7 +145,7 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                     <Modal.Body>
                         <Text>¿Seguro que quieres borrar esta tarea?</Text>
                         <Button colorScheme={"danger"} mt={5} onPress={handleDeleteTask}>Si</Button>
-                        <Button colorScheme={"light"} mt={5}>No</Button>
+                        <Button colorScheme={"light"} mt={5} onPress={() => setDeleteTaskModal(false)}>No</Button>
                     </Modal.Body>
                 </Modal.Content>
             </Modal>
@@ -156,8 +156,8 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                     <Modal.Body>
                         <EditTaskForm 
                             setEditTaskModal={setEditTaskModal}
-                            setTasks={setTasks}
-                            data={data}
+                            setTasks={setUserTasks}
+                            data={userTasks}
                             taskToEdit={taskToEdit}
                         />
                     </Modal.Body>
@@ -170,7 +170,7 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                     <Modal.Body>
                         <NewTaskForm 
                             setAddTaskModal={setAddTaskModal}
-                            setTasks={setTasks}
+                            setTasks={setUserTasks}
                         />
                     </Modal.Body>
                 </Modal.Content>

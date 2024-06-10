@@ -7,9 +7,11 @@ export default function EditTaskForm({ setEditTaskModal, setTasks, data, taskToE
     const [title, setTitle] = useState(taskToEdit.title)
     const [description, setDescription] = useState(taskToEdit.description)
 
-    const handleEditTask = () => {
+    const handleEditTask = () => {        
         const newTaskList = data.map((task: task) => {
-            task.id === taskToEdit.id ? 
+            console.log(task);
+            
+            return task.id === taskToEdit.id ? 
             { 
                 ...task, 
                 title: title, 
@@ -22,8 +24,8 @@ export default function EditTaskForm({ setEditTaskModal, setTasks, data, taskToE
 
     return (
         <FormControl>
-            <Input onChangeText={setTitle} value={title} />
-            <TextArea placeholder="Descripción..." autoCompleteType={"off"} onChangeText={(text) => setDescription(text)} value={description} mt={2}></TextArea>
+            <Input onChangeText={setTitle} value={taskToEdit ? title : ''} />
+            <TextArea placeholder="Descripción..." autoCompleteType={"off"} onChangeText={(text) => setDescription(text)} value={taskToEdit ? description : ''} mt={2}></TextArea>
             <Button mt="2" onPress={handleEditTask}>
                 Editar Tarea
             </Button>
