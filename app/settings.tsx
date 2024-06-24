@@ -15,7 +15,7 @@ import { useAppContext } from "@/context/AppContext";
 
 export default function Settings() {
 
-    const { theme, switchTheme } = useAppContext();
+    const { theme, switchTheme, timeFormat, setTimeFormat } = useAppContext();
     const [lenguage, setLenguage] = useState("es");
 
     const lenguages: any = {
@@ -76,7 +76,12 @@ export default function Settings() {
                 <Divider my={3}></Divider>
                 <VStack width={"100%"} my={2} alignItems={"start"}>
                     <Text color={theme === "dark" ? "#fff" : "#151718"}>{lenguages[lenguage].dateFormat}</Text>
-                    <Select color={theme === "dark" ? "#fff" : "#151718"} defaultValue="1" mt={4}>
+                    <Select 
+                        color={theme === "dark" ? "#fff" : "#151718"} 
+                        defaultValue={timeFormat} 
+                        mt={4}
+                        onValueChange={(itemValue) => setTimeFormat(itemValue)}
+                    >
                         <Select.Item label="Sun Jun 09 2024 14:51:47 GMT-0300" value="1"></Select.Item>
                         <Select.Item label="09/06/2024" value="2"></Select.Item>
                     </Select>

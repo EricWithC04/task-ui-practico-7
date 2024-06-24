@@ -1,3 +1,4 @@
+import { ProviderValue } from "@/types/context";
 import { createContext, useState, useContext } from "react";
 
 const AppContext = createContext<any>({})
@@ -7,6 +8,8 @@ export const useAppContext = () => useContext(AppContext)
 export const AppProvider = ({ children }: any) => {
 
     const [theme, setTheme] = useState("light")
+
+    const [timeFormat, setTimeFormat] = useState("1")
 
     const [userData, setUserData] = useState({
         username: '',
@@ -21,8 +24,17 @@ export const AppProvider = ({ children }: any) => {
         setTheme(theme === "light" ? "dark" : "light")
     }
 
+    const providerValue: ProviderValue = {
+        userData, 
+        login, 
+        theme, 
+        switchTheme,
+        timeFormat,
+        setTimeFormat
+    }
+
     return (
-        <AppContext.Provider value={{ userData, login, theme, switchTheme }}>
+        <AppContext.Provider value={providerValue}>
             { children }
         </AppContext.Provider>
     )

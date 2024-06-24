@@ -10,7 +10,7 @@ import { useAppContext } from "@/context/AppContext"
 
 const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => {
 
-    const { theme } = useAppContext()
+    const { theme, timeFormat } = useAppContext()
 
     const defaultTask = { 
         id: 0, 
@@ -86,6 +86,21 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
         setShowTask(taskData)
     }
 
+    const handleFormatDate = (currectTaskDate: string) => {
+        if (timeFormat === '1') {
+            return currectTaskDate
+        } else if (timeFormat === '2') {
+            const date = new Date(currectTaskDate)
+
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+
+            const formattedDate = `${day}/${month}/${year}`;
+            return formattedDate
+        }
+    }
+
     return (
         <Box alignItems={"center"} w={"80%"} mt={10}>
             <Heading fontSize="xl" p="4" pb="3" color={theme === "dark" ? "white" : "black"}>Tareas</Heading>
@@ -129,7 +144,7 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                     <Modal.Body>
                         <Text mt={2}><Text bold>Titulo: </Text>{showTask.title}</Text>
                         <Text mt={2}><Text bold>Descripción: </Text>{showTask.description}</Text>
-                        <Text mt={2}><Text bold>Fecha de Creación: </Text>{showTask.date}</Text>
+                        <Text mt={2}><Text bold>Fecha de Creación: </Text>{handleFormatDate(showTask.date)}</Text>
                         <Text mt={2}><Text bold>Creador: </Text>{nameOfUser}</Text>
                         <Text mt={2}>
                             <Text bold>Estado: </Text>
