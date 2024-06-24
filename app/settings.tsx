@@ -11,10 +11,11 @@ import {
     View,
 } from "native-base";
 import { useState } from "react";
+import { useAppContext } from "@/context/AppContext";
 
 export default function Settings() {
 
-    const [theme, setTheme] = useState("light");
+    const { theme, switchTheme } = useAppContext();
     const [lenguage, setLenguage] = useState("es");
 
     const lenguages: any = {
@@ -70,7 +71,7 @@ export default function Settings() {
                     <Text color={theme === "dark" ? "#fff" : "#151718"}>
                         {lenguages[lenguage].darkMode}
                     </Text>
-                    <Switch size={"lg"} onChange={() => setTheme(theme === "light" ? "dark" : "light")}></Switch>
+                    <Switch size={"lg"} onChange={() => switchTheme()}></Switch>
                 </HStack>
                 <Divider my={3}></Divider>
                 <VStack width={"100%"} my={2} alignItems={"start"}>

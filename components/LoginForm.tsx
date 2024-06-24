@@ -4,8 +4,11 @@ import { LoginErrors } from "@/types/validationError"
 import { router } from "expo-router"
 import dataUsers from "@/assets/data/users.json"
 import { storeData } from "@/utils/storage"
+import { useAppContext } from "@/context/AppContext"
 
 const LoginForm = () => {
+
+    const { login } = useAppContext()
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -36,6 +39,7 @@ const LoginForm = () => {
             if (!user) {
                 setIncorrectCredentials(true)
             } else {
+                login(username, password)
                 await storeData("user", JSON.stringify(user))
                 return router.push("/tasks")
             }

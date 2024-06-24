@@ -6,8 +6,11 @@ import NewTaskForm from "./NewTaskForm"
 import EditTaskForm from "./EditTaskForm"
 import { user } from "@/types/user"
 import { getData } from "@/utils/storage"
+import { useAppContext } from "@/context/AppContext"
 
 const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => {
+
+    const { theme } = useAppContext()
 
     const defaultTask = { 
         id: 0, 
@@ -85,10 +88,10 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
 
     return (
         <Box alignItems={"center"} w={"80%"} mt={10}>
-            <Heading fontSize="xl" p="4" pb="3">Tareas</Heading>
+            <Heading fontSize="xl" p="4" pb="3" color={theme === "dark" ? "white" : "black"}>Tareas</Heading>
             {
                 userTasks.length === 0 ? (
-                    <Text>Todavía no hay tareas</Text>
+                    <Text color={theme === "dark" ? "white" : "black"}>Todavía no hay tareas</Text>
                 ) : (
                     <FlatList
                         data={userTasks}
@@ -97,10 +100,10 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
                             return (
                                 <Box borderBottomWidth="1" width={"100%"} py="2">
                                     <HStack width={"100%"} alignItems={"center"} justifyContent="space-between">
-                                        <Text fontSize="lg" maxWidth={"60%"} bold onPress={() => handleShowTask(item)}>
+                                        <Text color={theme === "dark" ? "white" : "black"} fontSize="lg" maxWidth={"60%"} bold onPress={() => handleShowTask(item)}>
                                             {item.title}
                                         </Text>
-                                        <Spacer />
+                                        <Spacer  color={theme === "dark" ? "white" : "black"}/>
                                         <HStack w={'30%'} mt={2} justifyContent={'space-between'}>
                                             <Text mt={1} onPress={() => deleteTask(item)}>
                                                 <Icon as={AntDesign} color={"#DD4442"} name="delete" size="lg" />

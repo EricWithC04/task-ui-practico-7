@@ -6,8 +6,11 @@ import { task } from "@/types/task";
 import dataTasks from "@/assets/data/tasks.json";
 import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useAppContext } from "@/context/AppContext";
 
 export default function TasksPage() {
+
+    const { theme } = useAppContext()
 
     const [ tasks, setTasks ] = useState<Array<task>>(dataTasks);
 
@@ -16,6 +19,7 @@ export default function TasksPage() {
             style={{
                 flex: 1,
                 alignItems: "center",
+                backgroundColor: theme === "dark" ? "#151718" : "#fff",
             }}
         >
             <Box
