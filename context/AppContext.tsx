@@ -1,4 +1,4 @@
-import { ProviderValue } from "@/types/context";
+import { ProviderValue, Lenguage } from "@/types/context";
 import { createContext, useState, useContext } from "react";
 
 const AppContext = createContext<any>({})
@@ -8,6 +8,8 @@ export const useAppContext = () => useContext(AppContext)
 export const AppProvider = ({ children }: any) => {
 
     const [theme, setTheme] = useState("light")
+
+    const [lenguage, setLenguage] = useState<Lenguage>("es")
 
     const [timeFormat, setTimeFormat] = useState("1")
 
@@ -30,7 +32,9 @@ export const AppProvider = ({ children }: any) => {
         theme, 
         switchTheme,
         timeFormat,
-        setTimeFormat
+        setTimeFormat,
+        lenguage,
+        setLenguage
     }
 
     return (

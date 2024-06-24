@@ -10,7 +10,7 @@ import { useAppContext } from "@/context/AppContext"
 
 const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => {
 
-    const { theme, timeFormat } = useAppContext()
+    const { theme, timeFormat, lenguage } = useAppContext()
 
     const defaultTask = { 
         id: 0, 
@@ -19,6 +19,15 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
         date: "", 
         user_id: 0, 
         done: false 
+    }
+
+    const lenguagesText: any = {
+        es: "Tareas",
+        en: "Tasks",
+        fr: "Tâches",
+        ge: "Täske",
+        it: "Attività",
+        pt: "Tarefas",
     }
 
     const [userTasks, setUserTasks] = useState<Array<task>>([])
@@ -103,7 +112,7 @@ const TasksList = ({ data, setTasks }: { data: Array<task>, setTasks: any }) => 
 
     return (
         <Box alignItems={"center"} w={"80%"} mt={10}>
-            <Heading fontSize="xl" p="4" pb="3" color={theme === "dark" ? "white" : "black"}>Tareas</Heading>
+            <Heading fontSize="xl" p="4" pb="3" color={theme === "dark" ? "white" : "black"}>{lenguagesText[lenguage]}</Heading>
             {
                 userTasks.length === 0 ? (
                     <Text color={theme === "dark" ? "white" : "black"}>Todavía no hay tareas</Text>

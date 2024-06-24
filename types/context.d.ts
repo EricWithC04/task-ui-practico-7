@@ -8,4 +8,8 @@ export type ProviderValue = {
     switchTheme: () => void;
     timeFormat: string;
     setTimeFormat: (timeFormat: string) => void;
+    lenguage: Lenguage;
+    setLenguage: (language: Lenguage) => void;
 }
+
+export type Lenguage = 'es' | 'en' | 'fr' | 'ge' | 'it' | 'pt'

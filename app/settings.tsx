@@ -10,13 +10,17 @@ import {
     VStack, 
     View,
 } from "native-base";
-import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 
 export default function Settings() {
 
-    const { theme, switchTheme, timeFormat, setTimeFormat } = useAppContext();
-    const [lenguage, setLenguage] = useState("es");
+    const { 
+        theme, 
+        switchTheme, 
+        timeFormat, 
+        setTimeFormat,
+        lenguage,
+        setLenguage } = useAppContext();
 
     const lenguages: any = {
         es: {
@@ -91,8 +95,8 @@ export default function Settings() {
                     <Text color={theme === "dark" ? "#fff" : "#151718"}>{lenguages[lenguage].changeLenguage}</Text>
                     <Select 
                         color={theme === "dark" ? "#fff" : "#151718"} 
-                        defaultValue="es" 
-                        selectedValue={lenguage} 
+                        defaultValue={lenguage} 
+                        // selectedValue={lenguage} 
                         mt={4}
                         onValueChange={(itemValue) => setLenguage(itemValue)}
                     >
