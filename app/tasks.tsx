@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Box, HStack, Icon, ArrowBackIcon } from "native-base";
 import TasksList from "@/components/TasksList";
@@ -7,10 +7,17 @@ import dataTasks from "@/assets/data/tasks.json";
 import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useAppContext } from "@/context/AppContext";
+import { useSelector } from "react-redux";
 
 export default function TasksPage() {
 
     const { theme } = useAppContext()
+
+    const user = useSelector((state: any) => state.user)
+
+    useEffect(() => {
+        console.log(user);
+    }, [])
 
     const [ tasks, setTasks ] = useState<Array<task>>(dataTasks);
 

@@ -5,10 +5,13 @@ import { router } from "expo-router"
 import dataUsers from "@/assets/data/users.json"
 import { storeData } from "@/utils/storage"
 import { useAppContext } from "@/context/AppContext"
+import { reduxLogin } from "@/redux/actions"
+import { useDispatch } from "react-redux"
 
 const LoginForm = () => {
 
     const { login } = useAppContext()
+    const dispatch = useDispatch()
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -40,6 +43,7 @@ const LoginForm = () => {
                 setIncorrectCredentials(true)
             } else {
                 login(username, password)
+                dispatch(reduxLogin(username, password) as any)
                 await storeData("user", JSON.stringify(user))
                 return router.push("/tasks")
             }
